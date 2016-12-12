@@ -13,6 +13,7 @@ export class AsyncConnect extends Component {
     components: PropTypes.array.isRequired,
     params: PropTypes.object.isRequired,
     helpers: PropTypes.any,
+    flattenComponents: PropTypes.bool,
     /* eslint-enable */
   };
 

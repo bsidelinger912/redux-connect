@@ -1,5 +1,5 @@
 {
-  "name": "redux-connect",
+  "name": "@discodigital/redux-connect",
   "version": "4.0.2",
   "description": "It allows you to request async data, store them in redux state and connect them to your react component.",
   "main": "lib/index.js",

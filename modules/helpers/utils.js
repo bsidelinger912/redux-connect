@@ -62,12 +62,22 @@ export function eachComponents(components, iterator) {
  */
 export function filterAndFlattenComponents(components) {
   const flattened = [];
-  eachComponents(components, (component) => {
-    if (component && component.reduxAsyncConnect) {
+  const l = components.length;
+
+  for (let i = 0; i < l; i += 1) {
+    const component = components[i];
+    if (typeof component === 'object') {
+      Object.keys(component).forEach((key) => {
+        if (component[key] && component[key].reduxAsyncConnect) {
+          flattened.push(component[key]);
+        }
+      });
+    } else if (component && component.reduxAsyncConnect) {
       flattened.push(component);
     }
-  });
-  return flattened;
+  }
+
+  return [flattened];
 }
 
 /**
@@ -106,8 +116,15 @@ export function filterAndLayerComponents(components) {
  * @param  {Function} [data.filter] - filtering function
  * @return {Promise}
  */
-export function loadAsyncConnect({ components = [], filter = () => true, ...rest }) {
-  const layered = filterAndLayerComponents(components);
+export function loadAsyncConnect({
+  components = [],
+  filter = () => true,
+  flattenComponents,
+  ...rest
+}) {
+  const layered = (flattenComponents)
+    ? filterAndFlattenComponents(components)
+    : filterAndLayerComponents(components);
 
   if (layered.length === 0) {
     return Promise.resolve();
